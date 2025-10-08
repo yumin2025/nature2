@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情緒覺察之旅 | An Interactive Guide to Your Mind</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts: Noto Sans TC for Chinese, Poppins for English -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* 自定義樣式 */
+        body {
+            background-color: #000000;
+            color: #EAEAEA;
+            font-family: 'Poppins', 'Noto Sans TC', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 設置滾動吸附效果 */
+        .scroll-container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+        }
+
+        .scroll-section {
+            scroll-snap-align: start;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 2rem;
+        }
+        
+        /* Bento Grid 基礎樣式 */
+        .bento-grid {
+            display: grid;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .bento-item {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .bento-item:hover {
+            border-color: rgba(0, 238, 255, 0.5);
+            transform: translateY(-5px);
+        }
+
+        /* 高亮顏色與漸變 */
+        .highlight-cyan {
+            color: #00eeff;
+        }
+        .highlight-gradient-bg {
+             background: linear-gradient(145deg, rgba(0, 238, 255, 0.1), rgba(0, 238, 255, 0.02));
+        }
+
+        /* 超大字體 */
+        .display-font {
+            font-family: 'Noto Sans TC', sans-serif;
+            font-weight: 900;
+            font-size: clamp(3rem, 10vw, 8rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        
+        /* 輸入框樣式 */
+        .custom-input, .custom-textarea {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            width: 100%;
+            color: #FFFFFF;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .custom-input:focus, .custom-textarea:focus {
+            outline: none;
+            border-color: #00eeff;
+            box-shadow: 0 0 0 3px rgba(0, 238, 255, 0.3);
+        }
+        
+        /* 按鈕樣式 */
+        .choice-btn {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: transparent;
+            color: #EAEAEA;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .choice-btn:hover, .choice-btn.selected {
+            border-color: #00eeff;
+            background-color: rgba(0, 238, 255, 0.1);
+            color: #00eeff;
+            transform: scale(1.05);
+        }
+        
+        /* 動畫效果 */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .is-visible .fade-in-up {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* 為動畫元素添加延遲 */
+        .delay-1 { transition-delay: 0.2s; }
+        .delay-2 { transition-delay: 0.4s; }
+        .delay-3 { transition-delay: 0.6s; }
+        .delay-4 { transition-delay: 0.8s; }
+
+    </style>
+</head>
+<body>
+
+    <div class="scroll-container">
+
+        <!-- Page 1: 標題頁 -->
+        <section id="page1" class="scroll-section flex-col text-center">
+            <div class="absolute top-0 left-0 w-full h-full opacity-10">
+                 <!-- 勾線圖形化背景 -->
+                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+                            <path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(0, 238, 255, 0.3)" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#grid)" />
+                </svg>
+            </div>
+            <div class="z-10">
+                <h1 class="display-font fade-in-up">情緒覺察之旅</h1>
+                <p class="text-xl md:text-2xl text-gray-400 mt-4 fade-in-up delay-1">An Interactive Guide to Your Mind</p>
+            </div>
+            <div class="absolute bottom-10 text-gray-500 animate-bounce fade-in-up delay-2">
+                <i class="fas fa-chevron-down text-2xl"></i>
+                <span class="ml-2">向下滾動</span>
+            </div>
+        </section>
+
+        <!-- Page 2: Executive Summary -->
+        <section id="page2" class="scroll-section">
+            <div class="bento-grid grid-cols-1 lg:grid-cols-3">
+                <div class="lg:col-span-3 text-center fade-in-up">
+                    <h2 class="text-5xl font-bold">總覽 <span class="text-lg font-light text-gray-400 ml-2">EXECUTIVE SUMMARY</span></h2>
+                    <p class="text-gray-300 mt-2">本指引旨在透過互動問答，幫助你更好地認識與管理自己的情緒，並學習正向思考。</p>
+                </div>
+                <div class="bento-item highlight-gradient-bg lg:col-span-2 fade-in-up delay-1">
+                    <h3 class="text-2xl font-bold mb-4 highlight-cyan">學習目標</h3>
+                    <p class="text-lg text-gray-200">
+                        這是一場探索內心的旅程。我們將一起學習如何辨識情緒的信號，找到適合自己的平靜方式，並練習用更溫和、更有力量的語言與自己和他人對話。準備好，讓我們開始探索情緒的奧秘。
+                    </p>
+                </div>
+                <div class="bento-item flex flex-col justify-center items-center text-center fade-in-up delay-2">
+                    <i class="fas fa-search text-4xl mb-3 highlight-cyan"></i>
+                    <h4 class="text-xl font-bold">情緒辨識</h4>
+                    <p class="text-gray-400">Recognize Emotions</p>
+                </div>
+                <div class="bento-item flex flex-col justify-center items-center text-center fade-in-up delay-3">
+                    <i class="fas fa-hand-holding-heart text-4xl mb-3 highlight-cyan"></i>
+                    <h4 class="text-xl font-bold">情緒調適</h4>
+                    <p class="text-gray-400">Regulate Feelings</p>
+                </div>
+                <div class="bento-item flex flex-col justify-center items-center text-center fade-in-up delay-4">
+                     <i class="fas fa-lightbulb text-4xl mb-3 highlight-cyan"></i>
+                    <h4 class="text-xl font-bold">正向思考</h4>
+                    <p class="text-gray-400">Think Positively</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 3: Question 1 -->
+        <section id="page3" class="scroll-section">
+            <div class="w-full max-w-4xl text-center">
+                <p class="text-lg font-semibold highlight-cyan fade-in-up">STEP 01</p>
+                <h2 class="text-4xl md:text-6xl font-bold mt-2 mb-8 fade-in-up delay-1">生活中有許多挑戰，<br>你曾遇過哪些困難或挑戰呢？</h2>
+                <textarea id="q1_challenge" rows="5" class="custom-textarea fade-in-up delay-2" placeholder="試著描述看看...&#10;提示：人事時地物 (和誰、發生什麼事、什麼時候、在哪裡、為什麼)"></textarea>
+            </div>
+        </section>
+
+        <!-- Page 4: Question 2 -->
+        <section id="page4" class="scroll-section">
+             <div class="w-full max-w-4xl text-center">
+                <p class="text-lg font-semibold highlight-cyan fade-in-up">STEP 02</p>
+                <h2 class="text-4xl md:text-6xl font-bold mt-2 mb-8 fade-in-up delay-1">請描述當下遇到挑戰時的<br>一種主要負面情緒。</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 fade-in-up delay-2">
+                    <button class="choice-btn p-8 rounded-2xl text-3xl font-bold" data-emotion="害怕的">
+                        <i class="fas fa-ghost mr-3"></i>害怕的
+                    </button>
+                    <button class="choice-btn p-8 rounded-2xl text-3xl font-bold" data-emotion="憂愁的">
+                        <i class="fas fa-cloud-rain mr-3"></i>憂愁的
+                    </button>
+                    <button class="choice-btn p-8 rounded-2xl text-3xl font-bold" data-emotion="憤怒的">
+                        <i class="fas fa-fire-flame-curved mr-3"></i>憤怒的
+                    </button>
+                </div>
+                <div id="q2_details_container" class="mt-8 w-full max-w-2xl mx-auto transition-all duration-500 opacity-0 h-0 overflow-hidden">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-300">可以多說一點嗎？</h3>
+                    <textarea id="q2_details" rows="4" class="custom-textarea" placeholder="例如：我覺得心跳好快，手心在冒汗..."></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 5: Question 3 -->
+        <section id="page5" class="scroll-section">
+            <div class="bento-grid grid-cols-1 lg:grid-cols-2 w-full max-w-6xl">
+                 <div class="lg:col-span-2 text-center fade-in-up">
+                    <p class="text-lg font-semibold highlight-cyan">STEP 03</p>
+                    <h2 class="text-4xl md:text-6xl font-bold mt-2">要怎麼做才能幫助自己冷靜？</h2>
+                 </div>
+                <div class="bento-item fade-in-up delay-1">
+                    <h3 class="text-2xl font-bold mb-4 text-center highlight-cyan">1. 選擇一個動詞</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <button class="choice-btn verb-btn p-4 rounded-lg" data-verb="找誰求助">找誰求助</button>
+                        <button class="choice-btn verb-btn p-4 rounded-lg" data-verb="做出吸氣吐氣">做出吸氣吐氣</button>
+                        <button class="choice-btn verb-btn p-4 rounded-lg" data-verb="跑">跑</button>
+                        <button class="choice-btn verb-btn p-4 rounded-lg" data-verb="畫">畫</button>
+                        <button class="choice-btn verb-btn p-4 rounded-lg" data-verb="聽">聽</button>
+                        <button class="choice-btn verb-btn p-4 rounded-lg" data-verb="寫">寫</button>
+                        <button class="choice-btn verb-btn p-4 rounded-lg" data-verb="玩">玩</button>
+                        <button class="choice-btn verb-btn p-4 rounded-lg" data-verb="看">看</button>
+                    </div>
+                </div>
+                 <div class="bento-item fade-in-up delay-2">
+                    <h3 class="text-2xl font-bold mb-4 text-center highlight-cyan">2. 搭配一個名詞</h3>
+                    <input type="text" id="q3_noun" class="custom-input" placeholder="例如：老師、公園、音樂...">
+                    <p class="text-sm text-gray-400 mt-2">提示：求助對象、運動名稱、興趣名稱。</p>
+                </div>
+                <div class="bento-item lg:col-span-2 text-center h-48 flex justify-center items-center fade-in-up delay-3 highlight-gradient-bg">
+                    <p id="q3_result" class="text-2xl md:text-3xl font-bold text-white transition-all duration-300">組合你的冷靜方法...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 6: Question 4 -->
+        <section id="page6" class="scroll-section">
+             <div class="bento-grid grid-cols-1 lg:grid-cols-2 w-full max-w-6xl">
+                 <div class="lg:col-span-2 text-center fade-in-up">
+                    <p class="text-lg font-semibold highlight-cyan">STEP 04</p>
+                    <h2 class="text-4xl md:text-6xl font-bold mt-2">如何合宜地表達情緒與想法？</h2>
+                 </div>
+                <div class="bento-item fade-in-up delay-1">
+                    <h3 class="text-xl font-bold mb-2">不建議的說法：</h3>
+                    <p class="text-lg text-red-400 p-4 bg-red-500/10 rounded-lg">"你怎麼每次都這樣，真的很煩！"</p>
+                </div>
+                <div class="bento-item fade-in-up delay-2">
+                    <h3 class="text-xl font-bold mb-2">練習換句話說：</h3>
+                    <textarea id="q4_expression" rows="3" class="custom-textarea" placeholder="請換成「我」開頭的溫和說法..."></textarea>
+                    <p class="text-sm text-gray-400 mt-2">提示：先說出自己的感受，再說明事件，最後提出你的期望。</p>
+                    <div id="q4_feedback" class="mt-4 p-4 rounded-lg text-lg transition-all duration-500 opacity-0 h-0"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 7: Action Items -->
+        <section id="page7" class="scroll-section">
+            <div class="text-center w-full max-w-4xl">
+                <h2 class="display-font text-6xl md:text-8xl mb-8 fade-in-up">行動事項</h2>
+                <p class="text-xl text-gray-300 mb-10 fade-in-up delay-1">將今天所學，變成生活中的好習慣。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+                    <div class="bento-item flex items-center fade-in-up delay-2">
+                        <i class="fas fa-check-circle text-2xl highlight-cyan mr-4"></i>
+                        <div>
+                            <h4 class="text-xl font-bold">練習深呼吸</h4>
+                            <p class="text-gray-400">感到壓力時，專注吸氣與吐氣。</p>
+                        </div>
+                    </div>
+                    <div class="bento-item flex items-center fade-in-up delay-3">
+                        <i class="fas fa-check-circle text-2xl highlight-cyan mr-4"></i>
+                         <div>
+                            <h4 class="text-xl font-bold">情緒日記</h4>
+                            <p class="text-gray-400">每天花5分鐘，記錄下你的感受。</p>
+                        </div>
+                    </div>
+                    <div class="bento-item flex items-center fade-in-up delay-4">
+                        <i class="fas fa-check-circle text-2xl highlight-cyan mr-4"></i>
+                         <div>
+                            <h4 class="text-xl font-bold">尋求支持</h4>
+                            <p class="text-gray-400">和信任的家人、朋友或老師聊聊。</p>
+                        </div>
+                    </div>
+                    <div class="bento-item flex items-center fade-in-up delay-5">
+                         <i class="fas fa-check-circle text-2xl highlight-cyan mr-4"></i>
+                         <div>
+                            <h4 class="text-xl font-bold">正向自我對話</h4>
+                            <p class="text-gray-400">用鼓勵的話語，取代自我批評。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 動畫 Intersection Observer
+            const sections = document.querySelectorAll('.scroll-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, {
+                root: document.querySelector('.scroll-container'),
+                threshold: 0.4
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // 第二題：情緒選擇與細節描述
+            const emotionButtons = document.querySelectorAll('[data-emotion]');
+            const q2DetailsContainer = document.getElementById('q2_details_container');
+            emotionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    emotionButtons.forEach(btn => btn.classList.remove('selected'));
+                    button.classList.add('selected');
+                    
+                    // 顯示細節輸入框
+                    q2DetailsContainer.style.height = q2DetailsContainer.scrollHeight + 'px';
+                    q2DetailsContainer.style.opacity = '1';
+                });
+            });
+
+            // 第三題：冷靜方法生成器
+            let selectedVerb = '';
+            const verbButtons = document.querySelectorAll('.verb-btn');
+            const nounInput = document.getElementById('q3_noun');
+            const resultDisplay = document.getElementById('q3_result');
+
+            function generateSentence() {
+                const noun = nounInput.value.trim();
+                if (!selectedVerb || !noun) {
+                    resultDisplay.textContent = '組合你的冷靜方法...';
+                    return;
+                }
+
+                let sentence = '';
+                switch (selectedVerb) {
+                    case '找誰求助':
+                        sentence = `我可以「找 ${noun} 求助」，說出我的困難。`;
+                        break;
+                    case '做出吸氣吐氣':
+                        sentence = `我可以在「${noun}」這個地方，「做出深深的吸氣吐氣」，讓自己平靜。`;
+                        break;
+                    case '跑':
+                        sentence = `我可以去「${noun}」痛快地「跑」一跑，釋放壓力。`;
+                        break;
+                    case '畫':
+                        sentence = `我可以拿出畫筆，「畫」出關於「${noun}」的心情。`;
+                        break;
+                    case '聽':
+                        sentence = `我可以戴上耳機，「聽」我最愛的「${noun}」，轉換心情。`;
+                        break;
+                    case '寫':
+                        sentence = `我可以拿出紙筆，「寫」下關於「${noun}」的任何想法。`;
+                        break;
+                    case '玩':
+                        sentence = `我可以去「玩」一下「${noun}」，讓大腦休息片刻。`;
+                        break;
+                    case '看':
+                        sentence = `我可以找一本關於「${noun}」的書或影片來「看」，轉移我的注意力。`;
+                        break;
+                    default:
+                        sentence = '組合你的冷靜方法...';
+                }
+                resultDisplay.textContent = sentence;
+            }
+
+            verbButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    verbButtons.forEach(btn => btn.classList.remove('selected'));
+                    button.classList.add('selected');
+                    selectedVerb = button.dataset.verb;
+                    generateSentence();
+                });
+            });
+
+            nounInput.addEventListener('input', generateSentence);
+
+            // 第四題：表達方式評價
+            const expressionTextarea = document.getElementById('q4_expression');
+            const feedbackDiv = document.getElementById('q4_feedback');
+
+            expressionTextarea.addEventListener('input', () => {
+                const text = expressionTextarea.value.trim();
+                
+                // 重置樣式
+                feedbackDiv.classList.remove('bg-green-500/20', 'text-green-300', 'bg-yellow-500/20', 'text-yellow-300');
+                
+                if (text === '') {
+                    feedbackDiv.style.opacity = 0;
+                    feedbackDiv.style.height = '0px';
+                    feedbackDiv.innerHTML = '';
+                    return;
+                }
+
+                feedbackDiv.style.opacity = 1;
+                feedbackDiv.style.height = 'auto'; 
+
+                if (text.startsWith('我')) {
+                    feedbackDiv.innerHTML = '<i class="fas fa-check-circle mr-2"></i>很棒的開頭！以「我」開始能清楚表達自己的感受。';
+                    feedbackDiv.classList.add('bg-green-500/20', 'text-green-300');
+                } else {
+                    feedbackDiv.innerHTML = '<i class="fas fa-info-circle mr-2"></i>試試看用「我」開頭，會讓語氣更溫和喔。';
+                    feedbackDiv.classList.add('bg-yellow-500/20', 'text-yellow-300');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
